@@ -8,6 +8,9 @@ export const buildContainer = (block: any, variant: string, ctx: FactoryContext)
   block.styles.flexDirection = 'column';
   block.styles.gap = '20px';
   
+  // ==========================================
+  // 🧊 BAZOWE KONTENERY
+  // ==========================================
   if (variant === 'empty') { 
     block.styles.border = '2px dashed color-mix(in srgb, var(--canvas-text) 20%, transparent)'; 
     block.styles.backgroundColor = 'color-mix(in srgb, var(--canvas-text) 2%, transparent)'; 
@@ -61,7 +64,7 @@ export const buildContainer = (block: any, variant: string, ctx: FactoryContext)
   }
   
   // ==========================================
-  // 🔥 NAWIGACJE I STOPKI
+  // 🔥 NAWIGACJE I STOPKI (Adaptive Premium)
   // ==========================================
   else if (variant === 'nav-classic') { 
     block.name = 'NAVBAR'; block.styles.display = 'flex'; block.styles.flexDirection = 'row'; block.styles.alignItems = 'center'; block.styles.justifyContent = 'space-between'; block.styles.padding = '20px 40px'; block.styles.backgroundColor = 'transparent'; block.styles.borderBottom = '1px solid color-mix(in srgb, var(--canvas-text) 10%, transparent)'; block.styles.width = '100%'; 
@@ -130,19 +133,20 @@ export const buildContainer = (block: any, variant: string, ctx: FactoryContext)
     bottomPart.children = [logo, copy];
     block.children = [topPart, bottomPart];
   }
+  else if (variant === 'footer-minimal') {
+    block.name = 'FOOTER MINIMAL'; block.styles.display = 'flex'; block.styles.alignItems = 'center'; block.styles.justifyContent = 'center'; block.styles.padding = '40px 20px'; block.styles.backgroundColor = 'transparent'; block.styles.borderTop = '1px solid color-mix(in srgb, var(--canvas-text) 10%, transparent)';
+    const links = ctx.createBlock('container', 'empty', 'Linki'); links.styles.display = 'flex'; links.styles.flexDirection = 'row'; links.styles.gap = '30px'; links.styles.padding = '0'; links.styles.backgroundColor = 'transparent'; links.styles.border = 'none'; links.styles.marginBottom = '20px';
+    const l1 = ctx.createBlock('p', 'classic', 'Link'); l1.text = 'Polityka prywatności'; l1.styles.color = 'var(--canvas-text)'; l1.styles.opacity = '0.6'; l1.styles.fontSize = '14px'; l1.styles.margin = '0';
+    const l2 = ctx.createBlock('p', 'classic', 'Link'); l2.text = 'Regulamin'; l2.styles.color = 'var(--canvas-text)'; l2.styles.opacity = '0.6'; l2.styles.fontSize = '14px'; l2.styles.margin = '0';
+    const l3 = ctx.createBlock('p', 'classic', 'Link'); l3.text = 'Kontakt'; l3.styles.color = 'var(--canvas-text)'; l3.styles.opacity = '0.6'; l3.styles.fontSize = '14px'; l3.styles.margin = '0';
+    links.children = [l1, l2, l3];
+    const p = ctx.createBlock('p', 'classic', 'Tekst'); p.text = '© 2050 Twoja Firma. Wszelkie prawa zastrzeżone.'; p.styles.color = 'var(--canvas-text)'; p.styles.opacity = '0.4'; p.styles.fontSize = '14px'; p.styles.textAlign = 'center'; p.styles.margin = '0';
+    block.children = [links, p];
+  }
 
   // ==========================================
-  // 🔥 SYSTEM ALERTÓW & MICRO UI
+  // 🔥 SOCIAL PROOF & MICRO UI
   // ==========================================
-  else if (['alert-success', 'alert-warning', 'alert-tip', 'notice-box', 'alert-cosmos'].includes(variant)) { 
-    block.styles.position = 'relative'; block.styles.width = '450px'; block.styles.maxWidth = '100%'; block.styles.borderRadius = '16px'; block.styles.padding = '24px 30px'; block.styles.marginTop = '25px'; block.styles.overflow = 'visible'; block.styles.display = 'flex'; block.styles.flexDirection = 'column'; block.styles.gap = '10px';
-    const badgeId = ctx.generateId(); const textId = ctx.generateId(); 
-    let badgeText = ''; let mainColor = '';
-    if (variant === 'alert-success') { badgeText = 'SUKCES'; mainColor = '#10b981'; } else if (variant === 'alert-warning') { badgeText = 'UWAGA'; mainColor = '#f59e0b'; } else if (variant === 'alert-tip') { badgeText = 'WSKAZÓWKA'; mainColor = '#3b82f6'; } else if (variant === 'notice-box') { badgeText = 'CRITICAL NOTICE'; mainColor = '#ef4444'; } else if (variant === 'alert-cosmos') { badgeText = 'ANOMALY DETECTED'; mainColor = '#a855f7'; }
-    block.styles.backgroundColor = `color-mix(in srgb, ${mainColor} 10%, transparent)`; block.styles.border = `1px solid color-mix(in srgb, ${mainColor} 30%, transparent)`; block.styles.boxShadow = `inset 4px 0 0 ${mainColor}, 0 20px 40px rgba(0,0,0,0.1)`; block.styles.backdropFilter = 'blur(12px)';
-    if(variant === 'alert-cosmos') { block.text = `<style>@keyframes neonPulse_${rnd} { 0%, 100% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.2), inset 0 0 15px rgba(168, 85, 247, 0.1); } 50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.5), inset 0 0 30px rgba(168, 85, 247, 0.3); } } #block-${block.id} { animation: neonPulse_${rnd} 2s infinite alternate; } #block-${badgeId} { background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6) !important; background-size: 200% 200% !important; animation: gradientFlow_${rnd} 3s ease infinite !important; } @keyframes gradientFlow_${rnd} { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }</style>`; }
-    block.children = [ { id: badgeId, type: 'h2', name: 'PLAKIETKA', text: badgeText, styles: { position: 'absolute', top: '0px', left: '30px', transform: 'translateY(-50%)', backgroundColor: mainColor, color: '#ffffff', padding: '6px 16px', fontSize: '11px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '1px', borderRadius: '8px', zIndex: 50, width: 'max-content', whiteSpace: 'nowrap', boxShadow: `0 4px 10px color-mix(in srgb, ${mainColor} 60%, transparent)`, clearRow: false } }, { id: textId, type: 'p', name: 'TREŚĆ', text: variant === 'alert-success' ? 'Wszystkie węzły danych zsynchronizowane.' : variant === 'alert-warning' ? 'Wykryto niestabilność napięcia. Zalecana kopia.' : variant === 'alert-tip' ? 'Kliknij dwukrotnie by rozpocząć edycję wizualną.' : variant === 'alert-cosmos' ? '<strong style="color: var(--canvas-text); font-size: 18px; display: block; margin-bottom: 6px;">Rozdarcie Osnowy</strong>System odnotował fluktuacje na poziomie horyzontu zdarzeń.' : 'Dostęp do tego sektora wymaga weryfikacji biometrycznej klasy 4.', styles: { color: 'var(--canvas-text)', fontWeight: '500', fontSize: '15px', lineHeight: '1.6', margin: 0, width: '100%', clearRow: true } } ]; 
-  }
   else if (variant === 'review-classic') {
     block.name = 'RECENZJA PRO'; block.styles.backgroundColor = 'color-mix(in srgb, var(--canvas-text) 2%, transparent)'; block.styles.borderRadius = '24px'; block.styles.padding = '40px'; block.styles.boxShadow = '0 20px 40px rgba(0,0,0,0.05)'; block.styles.border = '1px solid color-mix(in srgb, var(--canvas-text) 10%, transparent)'; block.styles.gap = '20px'; block.styles.maxWidth = '450px';
     const stars = ctx.createBlock('p', 'classic', 'Gwiazdki'); stars.text = '★★★★★'; stars.styles.margin = '0'; stars.styles.fontSize = '24px'; stars.styles.color = 'var(--theme-color, #fbbf24)';
@@ -176,6 +180,23 @@ export const buildContainer = (block: any, variant: string, ctx: FactoryContext)
   else if (variant === 'logo-cloud') {
     block.name = 'LOGO CLOUD'; block.styles.flexDirection = 'column'; block.styles.alignItems = 'center'; block.styles.gap = '30px'; block.styles.padding = '60px 20px'; block.styles.backgroundColor = 'transparent'; block.styles.border = 'none';
     block.text = `<div style="font-size: 12px; font-weight: 800; color: var(--canvas-text); opacity: 0.5; text-transform: uppercase; letter-spacing: 3px;">Pionierzy, którzy nam zaufali</div><div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; align-items: center; opacity: 0.6; filter: grayscale(100%) contrast(2); transition: 0.5s;"><svg height="30" viewBox="0 0 100 30" fill="var(--canvas-text)"><text x="0" y="22" font-size="24" font-weight="900" font-family="sans-serif">ACME Corp</text></svg><svg height="30" viewBox="0 0 100 30" fill="var(--canvas-text)"><text x="0" y="22" font-size="24" font-weight="900" font-family="sans-serif">Globex</text></svg><svg height="30" viewBox="0 0 100 30" fill="var(--canvas-text)"><text x="0" y="22" font-size="24" font-weight="900" font-family="sans-serif">Soylent</text></svg><svg height="30" viewBox="0 0 100 30" fill="var(--canvas-text)"><text x="0" y="22" font-size="24" font-weight="900" font-family="sans-serif">Initech</text></svg></div>`;
+  }
+  else if (variant === 'rating-badge') {
+    block.name = 'RATING BADGE'; block.styles.display = 'inline-flex'; block.styles.flexDirection = 'row'; block.styles.alignItems = 'center'; block.styles.gap = '12px'; block.styles.padding = '12px 24px'; block.styles.backgroundColor = 'color-mix(in srgb, var(--canvas-text) 5%, transparent)'; block.styles.border = '1px solid color-mix(in srgb, var(--canvas-text) 10%, transparent)'; block.styles.borderRadius = '999px'; block.styles.width = 'max-content'; block.styles.boxShadow = '0 10px 20px rgba(0,0,0,0.05)';
+    block.text = `<div style="display:flex; color:var(--theme-color, #f59e0b); font-size:18px;">★★★★★</div><span style="font-size:15px; font-weight:800; color:var(--canvas-text);">4.9/5 <span style="font-weight:600; opacity:0.5;">(2,150+ opinii)</span></span>`;
+  }
+
+  // ==========================================
+  // 🔥 SYSTEM ALERTÓW & HUD POWIADOMIENIA 🔥
+  // ==========================================
+  else if (['alert-success', 'alert-warning', 'alert-tip', 'notice-box', 'alert-cosmos'].includes(variant)) { 
+    block.styles.position = 'relative'; block.styles.width = '450px'; block.styles.maxWidth = '100%'; block.styles.borderRadius = '16px'; block.styles.padding = '24px 30px'; block.styles.marginTop = '25px'; block.styles.overflow = 'visible'; block.styles.display = 'flex'; block.styles.flexDirection = 'column'; block.styles.gap = '10px';
+    const badgeId = ctx.generateId(); const textId = ctx.generateId(); 
+    let badgeText = ''; let mainColor = '';
+    if (variant === 'alert-success') { badgeText = 'SUKCES'; mainColor = '#10b981'; } else if (variant === 'alert-warning') { badgeText = 'UWAGA'; mainColor = '#f59e0b'; } else if (variant === 'alert-tip') { badgeText = 'WSKAZÓWKA'; mainColor = '#3b82f6'; } else if (variant === 'notice-box') { badgeText = 'CRITICAL NOTICE'; mainColor = '#ef4444'; } else if (variant === 'alert-cosmos') { badgeText = 'ANOMALY DETECTED'; mainColor = '#a855f7'; }
+    block.styles.backgroundColor = `color-mix(in srgb, ${mainColor} 10%, transparent)`; block.styles.border = `1px solid color-mix(in srgb, ${mainColor} 30%, transparent)`; block.styles.boxShadow = `inset 4px 0 0 ${mainColor}, 0 20px 40px rgba(0,0,0,0.1)`; block.styles.backdropFilter = 'blur(12px)';
+    if(variant === 'alert-cosmos') { block.text = `<style>@keyframes neonPulse_${rnd} { 0%, 100% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.2), inset 0 0 15px rgba(168, 85, 247, 0.1); } 50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.5), inset 0 0 30px rgba(168, 85, 247, 0.3); } } #block-${block.id} { animation: neonPulse_${rnd} 2s infinite alternate; } #block-${badgeId} { background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6) !important; background-size: 200% 200% !important; animation: gradientFlow_${rnd} 3s ease infinite !important; } @keyframes gradientFlow_${rnd} { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }</style>`; }
+    block.children = [ { id: badgeId, type: 'h2', name: 'PLAKIETKA', text: badgeText, styles: { position: 'absolute', top: '0px', left: '30px', transform: 'translateY(-50%)', backgroundColor: mainColor, color: '#ffffff', padding: '6px 16px', fontSize: '11px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '1px', borderRadius: '8px', zIndex: 50, width: 'max-content', whiteSpace: 'nowrap', boxShadow: `0 4px 10px color-mix(in srgb, ${mainColor} 60%, transparent)`, clearRow: false } }, { id: textId, type: 'p', name: 'TREŚĆ', text: variant === 'alert-success' ? 'Wszystkie węzły danych zsynchronizowane.' : variant === 'alert-warning' ? 'Wykryto niestabilność napięcia. Zalecana kopia.' : variant === 'alert-tip' ? 'Kliknij dwukrotnie by rozpocząć edycję wizualną.' : variant === 'alert-cosmos' ? '<strong style="color: var(--canvas-text); font-size: 18px; display: block; margin-bottom: 6px;">Rozdarcie Osnowy</strong>System odnotował fluktuacje na poziomie horyzontu zdarzeń.' : 'Dostęp do tego sektora wymaga weryfikacji biometrycznej klasy 4.', styles: { color: 'var(--canvas-text)', fontWeight: '500', fontSize: '15px', lineHeight: '1.6', margin: 0, width: '100%', clearRow: true } } ]; 
   }
 
   // ==========================================
@@ -226,8 +247,37 @@ export const buildContainer = (block: any, variant: string, ctx: FactoryContext)
   }
 
   // ==========================================
-  // 🖼️ SZALONE GALERIE (Fizyka Omijająca Edytor)
+  // 🖼️ SZALONE GALERIE (Ożywione, Czysty CSS)
+  // Omijamy ograniczenia edytora, pakując HTML do bloku graphic
   // ==========================================
+  else if (variant === 'gallery-coverflow') {
+    // 🔥 FULL-SCALE 3D HOLO-RING 🔥 
+    block.name = 'HOLO-RING 3D'; block.styles.padding = '0'; block.styles.backgroundColor = 'transparent';
+    const htmlBlock = ctx.createBlock('graphic', 'raw', 'Gallery Core');
+    htmlBlock.text = `
+      <style>
+        .cover-scene-${rnd} { perspective: 2000px; width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden; position: relative; }
+        .cover-carousel-${rnd} { width: 100vw; height: 100vh; transform-style: preserve-3d; animation: spin3D_${rnd} 30s infinite linear; position: relative; }
+        .cover-scene-${rnd}:hover .cover-carousel-${rnd} { animation-play-state: paused; }
+        @keyframes spin3D_${rnd} { 100% { transform: rotateY(-360deg); } }
+        .cover-item-${rnd} { position: absolute; width: 80vw; height: 80vh; left: 10vw; top: 10vh; border-radius: 40px; overflow: hidden; box-shadow: 0 50px 100px rgba(0,0,0,0.8); border: 4px solid color-mix(in srgb, var(--theme-color) 30%, transparent); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); cursor: crosshair; filter: brightness(0.3) blur(5px); backface-visibility: hidden; }
+        .cover-item-${rnd} img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .cover-item-${rnd}:hover { filter: brightness(1.2) blur(0px); box-shadow: 0 0 60px var(--theme-color); border-color: var(--theme-color); transform: scale(1.05) translateZ(100px); z-index: 100; }
+      </style>
+      <div class="cover-scene-${rnd}">
+        <div style="position: absolute; bottom: -10vh; width: 100vw; height: 20vh; background: radial-gradient(ellipse, var(--theme-color) 0%, transparent 70%); filter: blur(50px); opacity: 0.4; z-index: 10;"></div>
+        <div class="cover-carousel-${rnd}">
+          <div class="cover-item-${rnd}" style="transform: rotateY(0deg) translateZ(120vw);"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80"/></div>
+          <div class="cover-item-${rnd}" style="transform: rotateY(60deg) translateZ(120vw);"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80"/></div>
+          <div class="cover-item-${rnd}" style="transform: rotateY(120deg) translateZ(120vw);"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=80"/></div>
+          <div class="cover-item-${rnd}" style="transform: rotateY(180deg) translateZ(120vw);"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80"/></div>
+          <div class="cover-item-${rnd}" style="transform: rotateY(240deg) translateZ(120vw);"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"/></div>
+          <div class="cover-item-${rnd}" style="transform: rotateY(300deg) translateZ(120vw);"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1600&q=80"/></div>
+        </div>
+      </div>
+    `;
+    block.children = [htmlBlock];
+  }
   else if (variant === 'gallery-accordion') {
     block.name = 'KINETIC ACCORDION'; block.styles.padding = '0'; block.styles.backgroundColor = 'transparent';
     const htmlBlock = ctx.createBlock('graphic', 'raw', 'Gallery Core');
@@ -245,74 +295,6 @@ export const buildContainer = (block: any, variant: string, ctx: FactoryContext)
         <div class="acc-item-${rnd}"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"/></div>
         <div class="acc-item-${rnd}"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"/></div>
         <div class="acc-item-${rnd}"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80"/></div>
-      </div>
-    `;
-    block.children = [htmlBlock];
-  }
-  else if (variant === 'gallery-bouncing') {
-    // 🔥 ZERO-GRAVITY BOUNCING ORBS 🔥
-    block.name = 'KINETIC COLLIDER'; block.styles.padding = '0'; block.styles.backgroundColor = 'transparent'; block.styles.overflow = 'hidden';
-    const htmlBlock = ctx.createBlock('graphic', 'raw', 'Gallery Core');
-    htmlBlock.text = `
-      <style>
-        .bounce-wrap-${rnd} { position: relative; width: 100%; height: 600px; background: color-mix(in srgb, var(--canvas-text) 2%, transparent); border-radius: 32px; border: 1px solid color-mix(in srgb, var(--canvas-text) 10%, transparent); overflow: hidden; }
-        @keyframes bX1_${rnd} { 0% { left: 0px; } 100% { left: calc(100% - 150px); } }
-        @keyframes bY1_${rnd} { 0% { top: 0px; } 100% { top: calc(100% - 150px); } }
-        @keyframes bX2_${rnd} { 0% { left: calc(100% - 120px); } 100% { left: 0px; } }
-        @keyframes bY2_${rnd} { 0% { top: calc(100% - 120px); } 100% { top: 0px; } }
-        @keyframes bX3_${rnd} { 0% { left: 50%; } 100% { left: calc(100% - 180px); } }
-        @keyframes bY3_${rnd} { 0% { top: 10px; } 100% { top: calc(100% - 180px); } }
-        @keyframes bX4_${rnd} { 0% { left: 10px; } 100% { left: calc(100% - 130px); } }
-        @keyframes bY4_${rnd} { 0% { top: calc(100% - 130px); } 100% { top: 10px; } }
-        @keyframes bX5_${rnd} { 0% { left: calc(100% - 160px); } 100% { left: 20px; } }
-        @keyframes bY5_${rnd} { 0% { top: 50%; } 100% { top: calc(100% - 160px); } }
-
-        .orb-${rnd} { position: absolute; border-radius: 50%; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid color-mix(in srgb, var(--theme-color) 30%, transparent); transition: transform 0.4s, filter 0.4s; cursor: crosshair; filter: grayscale(50%); }
-        .orb-${rnd} img { width: 100%; height: 100%; object-fit: cover; }
-        .orb-${rnd}:hover { animation-play-state: paused !important; transform: scale(1.3); z-index: 100 !important; filter: grayscale(0%) brightness(1.2); box-shadow: 0 0 40px var(--theme-color); border-color: var(--theme-color); }
-        .bounce-wrap-${rnd}:hover .orb-${rnd}:not(:hover) { filter: grayscale(100%) brightness(0.4) blur(2px); }
-
-        .o1-${rnd} { width: 150px; height: 150px; animation: bX1_${rnd} 4.5s ease-in-out infinite alternate, bY1_${rnd} 3.2s ease-in-out infinite alternate; z-index: 1; }
-        .o2-${rnd} { width: 120px; height: 120px; animation: bX2_${rnd} 5s ease-in-out infinite alternate, bY2_${rnd} 4.1s ease-in-out infinite alternate; z-index: 2; }
-        .o3-${rnd} { width: 180px; height: 180px; animation: bX3_${rnd} 6s ease-in-out infinite alternate, bY3_${rnd} 4.8s ease-in-out infinite alternate; z-index: 3; }
-        .o4-${rnd} { width: 130px; height: 130px; animation: bX4_${rnd} 3.7s ease-in-out infinite alternate, bY4_${rnd} 5.3s ease-in-out infinite alternate; z-index: 4; }
-        .o5-${rnd} { width: 160px; height: 160px; animation: bX5_${rnd} 5.5s ease-in-out infinite alternate, bY5_${rnd} 3.9s ease-in-out infinite alternate; z-index: 5; }
-      </style>
-      <div class="bounce-wrap-${rnd}">
-        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; letter-spacing: 10px; color: var(--canvas-text); opacity: 0.1; text-transform: uppercase; pointer-events: none;">Zero Gravity</div>
-        <div class="orb-${rnd} o1-${rnd}"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80"/></div>
-        <div class="orb-${rnd} o2-${rnd}"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=300&q=80"/></div>
-        <div class="orb-${rnd} o3-${rnd}"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=300&q=80"/></div>
-        <div class="orb-${rnd} o4-${rnd}"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=300&q=80"/></div>
-        <div class="orb-${rnd} o5-${rnd}"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80"/></div>
-      </div>
-    `;
-    block.children = [htmlBlock];
-  }
-  else if (variant === 'gallery-coverflow') {
-    // 🔥 3D COVERFLOW CAROUSEL 🔥
-    block.name = 'HOLO-RING 3D'; block.styles.padding = '0'; block.styles.backgroundColor = 'transparent';
-    const htmlBlock = ctx.createBlock('graphic', 'raw', 'Gallery Core');
-    htmlBlock.text = `
-      <style>
-        .cover-scene-${rnd} { perspective: 1200px; width: 100%; height: 600px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--canvas-text) 2%, transparent); border-radius: 32px; border: 1px solid color-mix(in srgb, var(--canvas-text) 10%, transparent); overflow: hidden; position: relative; }
-        .cover-carousel-${rnd} { width: 300px; height: 200px; transform-style: preserve-3d; animation: spin3D_${rnd} 20s infinite linear; }
-        .cover-scene-${rnd}:hover .cover-carousel-${rnd} { animation-play-state: paused; }
-        @keyframes spin3D_${rnd} { 100% { transform: rotateY(-360deg); } }
-        .cover-item-${rnd} { position: absolute; width: 100%; height: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.6); border: 2px solid color-mix(in srgb, var(--theme-color) 40%, transparent); transition: 0.4s; cursor: crosshair; filter: brightness(0.5); }
-        .cover-item-${rnd} img { width: 100%; height: 100%; object-fit: cover; }
-        .cover-item-${rnd}:hover { filter: brightness(1.2); box-shadow: 0 0 40px var(--theme-color); border-color: var(--theme-color); transform: scale(1.1); }
-      </style>
-      <div class="cover-scene-${rnd}">
-        <div style="position: absolute; bottom: -50px; width: 400px; height: 100px; background: radial-gradient(ellipse, var(--theme-color) 0%, transparent 70%); filter: blur(40px); opacity: 0.5;"></div>
-        <div class="cover-carousel-${rnd}">
-          <div class="cover-item-${rnd}" style="transform: rotateY(0deg) translateZ(350px);"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80"/></div>
-          <div class="cover-item-${rnd}" style="transform: rotateY(60deg) translateZ(350px);"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"/></div>
-          <div class="cover-item-${rnd}" style="transform: rotateY(120deg) translateZ(350px);"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"/></div>
-          <div class="cover-item-${rnd}" style="transform: rotateY(180deg) translateZ(350px);"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80"/></div>
-          <div class="cover-item-${rnd}" style="transform: rotateY(240deg) translateZ(350px);"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80"/></div>
-          <div class="cover-item-${rnd}" style="transform: rotateY(300deg) translateZ(350px);"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80"/></div>
-        </div>
       </div>
     `;
     block.children = [htmlBlock];
